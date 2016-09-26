@@ -63,6 +63,17 @@ class SimpleRenderer(Renderer):
                       title=node.text,
                       **kwargs)
 
+    def visit_ImageView(self, node):
+        kwargs = {}
+        if node.active:
+            kwargs['_class'] = 'active'
+
+        img_tag = node.get_img_tag()
+
+        anchor = tags.a(img_tag,
+            href=node.get_url(), **kwargs)
+        return anchor
+
     def visit_Subgroup(self, node):
         group = tags.ul(_class='subgroup')
         title = tags.span(node.title)

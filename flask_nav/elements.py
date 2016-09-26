@@ -80,6 +80,45 @@ class View(Link):
         return request.path == self.get_url()
 
 
+class ImageView(View):
+    """A View link with an image instead of text.
+
+    The ``endpoint``, ``*args`` and ``**kwargs`` are passed on to
+    :func:`~flask.url_for` to get the link.
+
+    :param img_info: A dictionary of parameters for the image tag.  Valid
+                     keys include `src`, `alt`, `width`, `height`, `class`,
+                     and `id`.
+    :param endpoint: The name of the view.
+    :param args: Extra arguments for :func:`~flask.url_for`
+    :param kwargs: Extra keyword arguments for :func:`~flask.url_for`
+    """
+
+    def __init__(self, img_info, endpoint, *args, **kwargs):
+        self.text = None
+        self.img_src = img_info.get("src", None)
+        self.img_alt = img_info.get("alt", None)
+        self.img_width = img_info.get("width", None)
+        self.img_height = img_info.get("height", None)
+        self.img_class = img_info.get("class", None)
+        self.img_id = img_info.get("id", None)
+        self.endpoint = endpoint
+        self.url_for_args = args
+        self.url_for_kwargs = kwargs
+
+    def get_img_tag(self):
+      """Return the image tag for this item.
+
+      :return: A dominate image tag
+      """
+      img = tags.img(src=self.img_sr,
+          alt=self.img_alt,
+          _class=self.img_class,
+          _id=self.img_id)
+      return img
+
+
+
 class Separator(NavigationItem):
     """Separator.
 
